@@ -1,0 +1,65 @@
+#feeds
+{
+	width: 20%;
+	height: 100%;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#feeds ul 
+{
+	margin: 0;
+	padding: 0;
+    width: 100%;
+}
+
+#feeds ul li 
+{
+	margin: .2em 0;
+    overflow: hidden;
+	list-style: none;
+}
+
+#feeds ul li a
+{
+	display: block;
+	background: #c3d9ff;
+}
+
+#feeds ul li a:hover
+{
+	background: #8FB8FF;
+}
+
+#Posts
+{
+	width: 75%;
+	float: right;
+	overflow: hidden;
+}
+
+.mark_read_form
+{
+	float: right;
+}
+
+hr
+{
+	height: 1px;
+	border: 0;
+	background: #aaa;
+	clear: both;
+}
+
+h3.post_title
+{
+	margin: 0;
+}
+
+p.post_info
+{
+	margin: 0 0 1em;
+	font-size: .8em;
+}

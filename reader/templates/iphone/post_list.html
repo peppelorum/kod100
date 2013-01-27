@@ -1,0 +1,19 @@
+<h1 style="text-align: center;"><a href="{{ feed.url }}" target="_blank">{{ feed.title }}</a></h1>
+<a href="/admin/reader/feed/{{ feed.id }}/">Edit</a>
+
+{% for post in posts %}
+<div id="d{{ post.id }}" class="post">
+	<div class="mark_read_form">
+		<form method="POST" action="/reader/action/">
+			<input type="hidden" name="read" value="{% if post.read %}0{% else %}1{% endif %}" />
+			<input type="hidden" name="id" value="{{ post.id }}" />
+			<input type="submit" value="Mark Read" id="b{{ post.id }}" />
+		</form>
+	</div>
+		<h3 class="post_title"><a href="{{ post.link }}" target="_blank">{{ post.title }}</a></h3>
+		<p class="post_info">by {{ post.author }} at {{ post.dt_published }} cached at {{post.dt_cached }}</p>
+	<div class="post_content">{{ post.content|safe }}</div>
+	<hr />
+</div>
+{% endfor %}
+

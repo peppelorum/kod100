@@ -1,0 +1,57 @@
+{% extends "reader/iphone/base.html" %}
+
+{% block body %}
+<script type="text/javascript">
+	var feeds;
+	var posts_left = 0;
+
+	function find_next(tab)
+	{
+        tab = tab.parent();
+        var next = tab.nextAll('li:visible');
+        if(next.length == 0)
+        {
+            next = tab.prevAll('li:visible');
+        }
+		return next.eq(0).find('a');
+	}
+
+    $(function() {
+    });
+</script>
+<h1 id="pageTitle"></h1>
+<a class="button" id="homeButton" href="#categories">Back</a>
+<a class="button panel_button" style="display:none;" href="javascript:void(0);" id="mark_read">Mark Read</a>
+<ul id="categories" title="Categories" selected="true">
+    {% for category in category_list %}
+        {% if category.feed_set.unread.count != 0 %}
+        <li><a id="cat_link{{ category.id }}" href="#cat{{ category.id }}">{{ category.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% for category in category_list %}
+    {% if category.feed_set.unread.count != 0 %}
+    <ul id="cat{{ category.id }}" title="{{ category.name }}">
+            {% for feed in category.feed_set.unread %}
+            <li><a id="feed_link{{ feed.id }}" href="#feed{{ feed.id }}">{{ feed }} <span class="count">{{ feed.count_unread }}</span></a></li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+{% endfor %}
+{% for category in category_list %}
+    {% if category.feed_set.unread.count != 0 %}
+        {% for feed in category.feed_set.unread %}
+        <ul id="feed{{ feed.id }}" title="{{ feed }}">
+            {% for post in feed.unread_posts %}
+            <li><a href="#post" class="post_link" id="post_link{{ post.id }}" title="{{ post.title }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+<div id="post" class="panel" title="Post">
+    <div id="loading"></div>
+    <div id="contents"></div>
+</div>
+{% endblock %}
+

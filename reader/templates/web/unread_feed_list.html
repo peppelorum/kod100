@@ -1,0 +1,17 @@
+{% extends "reader/web/base.html" %}
+
+{% block body %}
+<script type="text/javascript" src="http://media.hicks-wright.net/js/jquery-ui.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#feeds > ul').tabs();
+	});
+</script>
+<div id="feeds">
+<ul>
+{% for feed in feed_list %}
+	<li><a href="/reader/{{ feed.id }}/unread/" title="Posts">{{ feed }} - ({{ feed.count_unread }})</a></li>
+{% endfor %}
+</div>
+<div id="Posts" class="ui-tabs-panel"></div>
+{% endblock %}

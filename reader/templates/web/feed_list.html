@@ -1,0 +1,67 @@
+{% extends "web/base.html" %}
+
+{% block body %}
+<script type="text/javascript" src="http://media.hicks-wright.net/js/jquery-ui.js"></script>
+<script type="text/javascript">
+	var feeds;
+	var posts_left = 0;
+	$(document).ready(function(){
+		feeds = $('#feeds > ul');
+		feeds.tabs({load: function(e, ui){
+			var current = $(ui.tab);
+			var next = find_next(current);
+			posts_left = $('input[type="submit"]:visible').length;
+			$("input[type='submit']").click(function(){
+				var id = $(this).attr('id').substring(1);
+				$.post('/reader/action/', {read: 1, id: id, ajax: 1});
+				$('#d'+id).slideUp('fast', function(){$(this).hide();});
+
+				posts_left = posts_left - 1;
+
+				if(posts_left == 0)
+				{
+					current.hide();
+                    if(current.parent().prev().is('h2') && !current.parent().next().is('li'))
+                    {
+                        current.parent().prev().remove();
+                    }
+					current.parent().remove();
+					next.click();
+				}
+				return false;
+			});
+		}});
+	});
+
+	function find_next(tab)
+	{
+        tab = tab.parent();
+        var next = tab.nextAll('li:visible');
+        if(next.length == 0)
+        {
+            next = tab.prevAll('li:visible');
+        }
+		return next.eq(0).find('a');
+	}
+</script>
+<div id="feeds">
+	<ul>
+		{% for category in category_list %}
+			{% if show_all %}
+				<h2>{{ category.name }}</h2>
+				{% for feed in category.feed_set.all %}
+					<li><a href="/reader/{{ feed.id }}/all/" title="Posts">{{ feed }} - ({{ feed.count_total }})</a></li>
+				{% endfor %}
+			{% else %}
+				{% if category.feed_set.unread.count != 0 %}
+					<h2>{{ category.name }}</h2>
+					{% for feed in category.feed_set.unread %}
+					<li><a href="/reader/{{ feed.id }}/unread/" title="Posts" id="f{{ feed.id }}">{{ feed }} - ({{ feed.count_unread }})</a></li>
+					{% endfor %}
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</ul>
+</div>
+<div id="Posts" class="ui-tabs-panel"></div>
+	{% endblock %}
