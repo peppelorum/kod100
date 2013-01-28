@@ -1,6 +1,7 @@
 import urllib2
 from urlparse import urljoin
 import datetime
+import collections
 
 import feedparser
 #from BeautifulSoup import BeautifulSoup as BS
@@ -13,14 +14,64 @@ from django.shortcuts import render_to_response, get_object_or_404
 from models import Category, Feed, Post
 from decorators import view
 from feeds import update_feeds
+from utils import daterange
 
 ctx = dict
 
 @view(r'^all/$', 'feed_list.html', True)
 def all_feeds(request):
-    return ctx(category_list=Category.objects.all(), show_all=True)
 
-@view(r'^$', 'feed_list.html', True)
+    ctx = {
+        'category_list': Category.objects.all(),
+        'show_all': True
+    }
+
+    return ctx
+
+@view(r'^$', 'graph.html', True)
+def graph(request):
+    start = datetime.date(2013, 1, 27)
+    to = datetime.timedelta(days=100)
+    end = start + to
+
+    ar = {}
+
+    feeds = Feed.objects.all()
+
+    for feed in feeds:
+        user_ar = {}
+
+        r = daterange(start, to=end)
+        for a in r:
+            count = Post.objects.filter(dt_published__year=a.year, dt_published__month=a.month, dt_published__day=a.day, feed=feed).count()
+
+            if count > 20:
+                class_ = '_4'
+            elif count > 15 and count <=20:
+                class_ = '_3'
+            elif count <=15 and count > 10:
+                class_ = '_2'
+            elif count <= 10 and count > 0:
+                class_ = '_1'
+            else:
+                class_ = '_0'
+
+            user_ar[a] = class_
+
+        od = collections.OrderedDict(sorted(user_ar.items()))
+        ar[feed] = od
+
+    ctx = {
+        'post_list': Post.objects.all(),
+        'table': ar,
+        'today': datetime.datetime.today(),
+        'show_all': True
+    }
+
+    return ctx
+
+
+@view(r'unread/^$', 'feed_list.html', True)
 def unread_feeds(request):
     return ctx(category_list=Category.objects.all())
 
@@ -87,6 +138,8 @@ def update(request, id):
 def update_all(request):
     for feed in Feed.objects.all():
         update(request, feed.id)
+    if request.is_ajax():
+        return HttpResponse('Success')
     return HttpResponseRedirect('/reader/')
 
 @view(r'^action/$', True)

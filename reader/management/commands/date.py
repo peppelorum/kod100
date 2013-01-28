@@ -1,3 +1,10 @@
+# -*- coding: utf8 -*-
+
+from django.core.management.base import BaseCommand, CommandError
+
+#from reader.models import Feed
+#
+
 # -*- coding: utf-8 -*-
 
 """
@@ -197,10 +204,64 @@ class delta(object):
         return datetime.timedelta(**kwargs)
 
 
+#if __name__ == '__main__':
 
-def choices(*args):
-    class const_tuple(tuple): pass
-    choices = const_tuple(args)
-    for t in choices:
-        setattr(choices, t[1], t[0])
-    return choices
+
+class Command(BaseCommand):
+
+    def handle(self, *args, **options):
+
+        start = datetime.date(2013, 1, 27)
+        to_ = datetime.timedelta(days=100)
+        end = start + to_
+
+        r = daterange(start, to=end)
+
+        print start, to_, end, r
+
+        for c in r:
+            print c
+
+
+
+
+
+
+
+
+#        a = datetime.datetime.today()
+#        print a
+#        b = daterange(a, 10)
+#
+#        for c in b:
+#            print c
+#        import doctest
+#        doctest.testmod()
+#        pass
+#        for feed in Feed.objects.all():
+##            try:
+#            print 'yay', feed
+#            feed.update()
+#            except:
+#                print 'no', feed
+#                pass
+
+#
+##!/usr/bin/python
+#
+##import settings
+#from django.core.management import setup_environ
+#
+#setup_environ(settings)
+#
+#
+#
+#def update_all():
+#
+#
+#def main():
+#    update_all()
+#
+#if __name__ == "__main__":
+#    main()
+#

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Kod 100 - login</title>
+
+</head>
+<body>
+
+
+
+
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    <h1>Kod 100 - login</h1>
+
+    <p>To be able to use the offline version of the DCB app you have to login.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }} (case sensitive)</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Login" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </td>
+            </tr>
+        </table>
+
+
+    </form>
+
+
+
+
+</body>
+</html>

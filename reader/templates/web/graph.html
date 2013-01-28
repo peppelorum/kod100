@@ -1,0 +1,57 @@
+{% extends "web/base.html" %}
+
+{% block body %}
+
+<h1>#Kod100</h1>
+
+    <h2>Githubaktivitet</h2>
+
+    <table>
+
+        <tr class="dates">
+            <td>Vecka</td>
+            {% for col in table.items.1.1 %}
+
+                    {% if forloop.counter|divisibleby:"7" %}
+                        {% ifchanged %}
+                            <td colspan="7">
+                                {{ col|date:"W" }}
+                            </td>
+                        {% endifchanged %}
+                    {% endif %}
+
+            {% endfor %}
+        </tr>
+
+    {% for row, val in table.items %}
+
+        <tr>
+            <td>
+                <a href="{{ row.url }}">{{ row }}</a>
+
+            </td>
+            {% for col in val.items %}
+
+                <td class="{{ col.1 }}{% if col.0|date:"N d Y" == today|date:"N d Y" %} today{% endif %}">
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+
+    </table>
+
+    <div class="legend">
+        Aktiviteter per dag
+        <div class="_0">0</div>
+        <div class="_1">&le;10 och &gt; 0</div>
+        <div class="_2">&le;15 och &gt; 10</div>
+        <div class="_3">&le;20 och &gt; 15</div>
+        <div class="_4">&gt;20</div>
+        Svart ram markerar aktuell dag
+    </div>
+
+    <button class="update">
+        Uppdatera
+    </button>
+
+	{% endblock %}
