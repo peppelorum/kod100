@@ -166,6 +166,9 @@ def update(request, id):
         return HttpResponseRedirect('/reader/')
 
     update_feeds(feed)
+
+    if request.is_ajax():
+        return HttpResponse('%s yay!' % id)
     return HttpResponseRedirect('/reader/')
 
 @view(r'^update/all/$', True)
