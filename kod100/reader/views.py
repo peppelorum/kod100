@@ -128,9 +128,9 @@ def add_feed_github(request, user=None):
         feed.dt_updated = datetime.datetime(1, 1, 1, 0, 0, 0)
         feed.save()
 
-    #    return 'yep'
+        return HttpResponse('yay')
 
-        return HttpResponseRedirect('/admin/reader/feed/%d/' % (feed.id,))
+#        return HttpResponseRedirect('/admin/reader/feed/%d/' % (feed.id,))
     else:
         return 'h4axx0r..'
 
