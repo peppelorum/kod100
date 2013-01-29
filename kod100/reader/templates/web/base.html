@@ -87,10 +87,12 @@
 
                 $('.update').click(function(evt) {
 
-                    for (var i=0; i<{{ feed_count }};i++) {
+                    for (var i=1; i<={{ feed_count }};i++) {
+                        console.log(i, 'started')
+
                         $.get('/reader/update/'+ i +'/', '', function(data, status, xhr) {
                             console.log(i, 'done');
-                        })
+                        });
 
                         i++;
 
