@@ -16,6 +16,8 @@ from decorators import view
 from feeds import update_feeds
 from utils import daterange
 
+from django.core.cache import cache
+
 ctx = dict
 
 @view(r'^all/$', 'feed_list.html', True)
@@ -34,32 +36,36 @@ def graph(request):
     to = datetime.timedelta(days=100)
     end = start + to
 
-    ar = {}
+    if not cache.get('ar'):
 
-    feeds = Feed.objects.all()
+        ar = {}
 
-    for feed in feeds:
-        user_ar = {}
+        feeds = Feed.objects.all()
 
-        r = daterange(start, to=end)
-        for a in r:
-            count = Post.objects.filter(dt_published__year=a.year, dt_published__month=a.month, dt_published__day=a.day, feed=feed).count()
+        for feed in feeds:
+            user_ar = {}
 
-            if count > 20:
-                class_ = '_4'
-            elif count > 15 and count <=20:
-                class_ = '_3'
-            elif count <=15 and count > 10:
-                class_ = '_2'
-            elif count <= 10 and count > 0:
-                class_ = '_1'
-            else:
-                class_ = '_0'
+            r = daterange(start, to=end)
+            for a in r:
+                count = Post.objects.filter(dt_published__year=a.year, dt_published__month=a.month, dt_published__day=a.day, feed=feed).count()
 
-            user_ar[a] = class_
+                if count > 20:
+                    class_ = '_4'
+                elif count > 15 and count <=20:
+                    class_ = '_3'
+                elif count <=15 and count > 10:
+                    class_ = '_2'
+                elif count <= 10 and count > 0:
+                    class_ = '_1'
+                else:
+                    class_ = '_0'
 
-        od = collections.OrderedDict(sorted(user_ar.items()))
-        ar[feed] = od
+                user_ar[a] = class_
+
+            od = collections.OrderedDict(sorted(user_ar.items()))
+            ar[feed] = od
+
+        cache.set('ar', ar, 60*60)
 
     ctx = {
 #        'post_list': Post.objects.all(),
@@ -166,6 +172,8 @@ def update(request, id):
         return HttpResponseRedirect('/reader/')
 
     update_feeds(feed)
+
+    cache.delete('ar')
 
     if request.is_ajax():
         return HttpResponse('%s yay!' % id)

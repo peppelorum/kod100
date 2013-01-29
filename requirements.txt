@@ -3,3 +3,4 @@ feedparser
 BeautifulSoup4
 dj_database_url
 psycopg2
+django-heroku-redisify
