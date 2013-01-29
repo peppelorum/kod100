@@ -62,7 +62,8 @@ def graph(request):
         ar[feed] = od
 
     ctx = {
-        'post_list': Post.objects.all(),
+#        'post_list': Post.objects.all(),
+        'feed_count': Feed.objects.all().count(),
         'table': ar,
         'today': datetime.datetime.today(),
         'show_all': True

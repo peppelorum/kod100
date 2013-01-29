@@ -81,15 +81,24 @@
 
         </style>
 
+        {% if user.is_authenticated %}
         <script type="text/javascript">
             $(document).ready(function() {
+
                 $('.update').click(function(evt) {
-                    $.get('/reader/update/all/', '', function(data, status, xhr) {
-                        location.reload();
-                    })
+
+                    for (var i=0; i<{{ feed_count }};i++) {
+                        $.get('/reader/update/'+ i +'/', '', function(data, status, xhr) {
+                            console.log(i, 'done');
+                        })
+
+                    }
+
+
                 })
             });
         </script>
+                {% endif %}
 	</head>
 	<body>
 {#        <div style="float:right"><a href="/accounts/logout/">Log Out</a></div>#}
