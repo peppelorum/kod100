@@ -9,7 +9,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'rssagg.views.home', name='home'),
     url(r'^reader/', include('reader.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
+    url(r'^$', 'django.views.generic.simple.redirect_to', {'url': '/reader/'}, name='home'),
+
+# Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
