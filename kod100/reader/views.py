@@ -28,7 +28,7 @@ def all_feeds(request):
 
     return ctx
 
-@view(r'^$', 'graph.html', True)
+@view(r'^$', 'graph.html', False)
 def graph(request):
     start = datetime.date(2013, 1, 27)
     to = datetime.timedelta(days=100)
