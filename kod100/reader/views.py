@@ -102,6 +102,27 @@ def add_rss(request, url=None):
     update(request, feed.id)
     return HttpResponseRedirect('/admin/reader/feed/%d/' % (feed.id,))
 
+
+@view(r'^add-github/$', True)
+def add_feed(request, user=None):
+    if user is None:
+        return 'fail'
+
+    user = request.REQUEST['user']
+    url = 'https://github.com/%s/' % user
+    feed_url = 'https://github.com/%s.atom' % user
+
+    feed, create = Feed.objects.get_or_create(title=user)
+#    feed.title = user
+    feed.url = url
+    feed.feed_url = feed_url
+    feed.dt_checked = datetime.datetime(1, 1, 1, 0, 0, 0)
+    feed.dt_updated = datetime.datetime(1, 1, 1, 0, 0, 0)
+    feed.save()
+
+    return HttpResponseRedirect('/admin/reader/feed/%d/' % (feed.id,))
+
+
 @view(r'^(?P<id>\d+)/unread/$', 'post_list.html', True)
 def unread(request, id):
     feed = get_object_or_404(Feed, id=id)
