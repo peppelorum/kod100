@@ -67,6 +67,9 @@ def graph(request):
 
         cache.set('ar', ar, 60*60)
 
+    else:
+        ar = cache.get('ar')
+
     ctx = {
 #        'post_list': Post.objects.all(),
         'feed_count': Feed.objects.all().count(),
