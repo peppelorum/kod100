@@ -116,9 +116,13 @@ def add_feed_github(request, user=None):
         feed_url = 'https://github.com/%s.atom' % user
 
     #    feed, create = Feed.objects.get_or_create(title=user)
+
+        category, created = Category.objects.get_or_create(name='github', slug='github')
+
         feed = Feed()
         feed.title = user
         feed.url = url
+        feed.category = category
         feed.feed_url = feed_url
         feed.dt_checked = datetime.datetime(1, 1, 1, 0, 0, 0)
         feed.dt_updated = datetime.datetime(1, 1, 1, 0, 0, 0)
