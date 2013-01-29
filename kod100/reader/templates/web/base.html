@@ -91,7 +91,7 @@
                         console.log(i, 'started')
 
                         $.get('/reader/update/'+ i +'/', '', function(data, status, xhr) {
-                            console.log(i, 'done');
+                            console.log(data, 'done');
                         });
 
                         i++;
