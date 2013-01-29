@@ -6,3 +6,4 @@ psycopg2
 redis
 django-redis-cache
 django-heroku-redisify
+hiredis
