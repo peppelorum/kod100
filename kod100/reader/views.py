@@ -74,7 +74,7 @@ def graph(request):
 
     ctx = {
 #        'post_list': Post.objects.all(),
-        'feed_count': Feed.objects.all().count(),
+        'feed_count': [x.id for x in Feed.objects.all()],
         'table': ar,
         'today': datetime.datetime.today(),
         'show_all': True

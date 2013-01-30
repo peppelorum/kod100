@@ -86,12 +86,12 @@
             $(document).ready(function() {
 
                 $('.update').click(function(evt) {
+                    var a = {{ feed_count }};
+                    for (var i=0; i<a.length; i++) {
+                        console.log(i, a[i], 'started');
 
-                    for (var i=1; i<={{ feed_count }};i++) {
-                        console.log(i, 'started')
-
-                        $.get('/reader/update/'+ i +'/', '', function(data, status, xhr) {
-                            console.log(data, 'done');
+                        $.get('/reader/update/'+ a[i] +'/', '', function(data, status, xhr) {
+                            console.log(data, status, 'done');
                         });
                     }
 
