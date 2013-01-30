@@ -65,6 +65,8 @@ def graph(request):
             od = collections.OrderedDict(sorted(user_ar.items()))
             ar[feed] = od
 
+        ar = collections.OrderedDict(sorted(ar.items()))
+
         cache.set('ar', ar, 60*60)
 
     else:
